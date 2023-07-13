@@ -1,36 +1,58 @@
 #include <bits/stdc++.h>
 using namespace std;
+typedef long long ll;
+
 int main()
 {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(NULL);
-
-    int t;
+    ll t;
     cin >> t;
     while (t--)
     {
-        int n;
+        vector<ll> v1, v2;
+        ll n;
         cin >> n;
-        vector<int> a(n);
-        vector<int> frq(n + 1, 1);
-        for (int i = 0; i < n; i++)
+        ll a[n];
+        for (ll i = 0; i < n; i++)
         {
             cin >> a[i];
         }
-        n = unique(a.begin(), a.end()) - a.begin();
-        a.resize(n);
-        for (auto it : a)
+        sort(a, a + n);
+        ll p = a[0];
+        for (ll i = 0; i < n; i++)
         {
-            frq[it]++;
+            v1.push_back(a[i]);
         }
-        frq[a[0]]--;
-        frq[a[n - 1]]--;
-        int mn = INT_MAX;
-        for (int i = 0; i < n; i++)
+        if (n == 1)
         {
-            mn = min(mn, frq[a[i]]);
+            cout << a[0] << endl;
         }
-        cout << mn << '\n';
+        else if (n == 2)
+        {
+            cout << max(a[0], a[1] - a[0]) << endl;
+        }
+        else if (a[0] == a[n - 1] && a[0] > 0)
+        {
+            cout << a[0] << endl;
+        }
+        else
+        {
+            ll i = 0, sum = 0, k = n;
+            while (k--)
+            {
+                while (i < v1.size() && v1[i] - sum == 0)
+                    i++;
+
+                if (i < v1.size() && v1[i] - sum != 0)
+                {
+                    v2.push_back(v1[i] - sum);
+                    sum = v1[i];
+                }
+                else
+                {
+                    v2.push_back(0);
+                }
+            }
+            cout << *max_element(v2.begin(), v2.end()) << endl;
+        }
     }
 }
